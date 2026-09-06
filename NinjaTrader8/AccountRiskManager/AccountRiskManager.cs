@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using NinjaTrader.Cbi;
+using NinjaTrader.Data;
 
 #endregion
 
@@ -388,7 +389,9 @@ namespace NinjaTrader.NinjaScript.AddOns
                 Controller.OnAccountRealizedPnL(e.Value, DateTime.Now);
         }
 
-        private void OnMarketDataUpdate(object sender, MarketDataUpdateEventArgs e)
+        // Instrument.MarketData.Update is EventHandler<MarketDataEventArgs> in NT8.
+        // Keeping this signature exact is required for the event subscription to compile.
+        private void OnMarketDataUpdate(object sender, MarketDataEventArgs e)
         {
             if (e.MarketDataType == MarketDataType.Bid || e.MarketDataType == MarketDataType.Ask || e.MarketDataType == MarketDataType.Last)
                 Controller.OnMarketData(e.Instrument, e.MarketDataType, e.Price, e.Time);

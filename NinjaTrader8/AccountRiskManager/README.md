@@ -16,6 +16,8 @@ It **does not place orders, cancel orders, flatten positions, or disable strateg
 2. Add `AccountRiskManager.cs` to the NinjaScript AddOns folder, compile it in the NinjaScript Editor, and create the monitor from the AddOn after the user has selected an `Account`.
 3. Keep the returned object alive for the AddOn lifetime, call `Start()`, and call `Dispose()` when the AddOn terminates.
 
+The source imports both `System.Threading` (for the reset clock) and `NinjaTrader.Data`. In NT8, `Instrument.MarketData.Update` is an `EventHandler<MarketDataEventArgs>` event; consequently the callback is declared as `OnMarketDataUpdate(object sender, MarketDataEventArgs e)`. Do not replace it with `MarketDataUpdateEventArgs`, which is not the event argument type expected by this subscription.
+
 ```csharp
 private NinjaTraderAccountRiskMonitor monitor;
 
